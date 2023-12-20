@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmaplucas
+  namespace: exam-lucasdriessens
+data:
+  NAME: 'Lucas Driessens'
+  DATE: '2023-12-20'
+  API_HOST: 'api-service'
+  API_PORT: '8080'

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: exam-lucasdriessens
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          # image: nathansegers/containers_23-24_december_frontend:versie2
+          image: lucasdriessens/container_frontened:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: configmaplucas
+                  key: API_PORT
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: configmaplucas
+                  key: API_HOST
+          resources: {}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k3d-k3s-default-agent-2
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30000
+  type: NodePort

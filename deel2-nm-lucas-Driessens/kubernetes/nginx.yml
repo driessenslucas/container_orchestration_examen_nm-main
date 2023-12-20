@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-lucas-driessens
+  labels:
+    exam: containers-orchestration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-lucas-driessens
+  template:
+    metadata:
+      labels:
+        app: nginx-lucas-driessens
+    spec:
+      containers:
+        - name: nginx
+          image: nathansegers/vue-docker:v2.0.0
+          ports:
+            - containerPort: 80

@@ -4,7 +4,7 @@ services:
   web:
     build: ./pointsApp
     networks:
-      - webnet
+      - web
       - database
     ports:
       - 8500:5000
@@ -28,14 +28,14 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U student -d points']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 10s
       timeout: 5s
       retries: 5
 
 networks:
   database:
-  webnet:
+  web:
 
 volumes:
   db-data:
